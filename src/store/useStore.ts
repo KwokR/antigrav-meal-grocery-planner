@@ -6,11 +6,13 @@ interface AppState {
     recipes: Recipe[];
     mealPlan: MealPlan;
     highIronFocus: boolean;
+    staples: string[];
     addRecipe: (recipe: Recipe) => void;
     deleteRecipe: (id: string) => void;
     updateMealPlan: (date: string, recipeId: string) => void;
     removeFromMealPlan: (date: string, recipeId: string) => void;
     toggleHighIronFocus: () => void;
+    toggleStaple: (item: string) => void;
 }
 
 export const useStore = create<AppState>()(
@@ -19,6 +21,7 @@ export const useStore = create<AppState>()(
             recipes: [],
             mealPlan: {},
             highIronFocus: false,
+            staples: [],
             addRecipe: (recipe) =>
                 set((state) => ({ recipes: [...state.recipes, recipe] })),
             deleteRecipe: (id) =>
@@ -56,6 +59,15 @@ export const useStore = create<AppState>()(
                 }),
             toggleHighIronFocus: () =>
                 set((state) => ({ highIronFocus: !state.highIronFocus })),
+            toggleStaple: (item) =>
+                set((state) => {
+                    const isStaple = state.staples.includes(item);
+                    return {
+                        staples: isStaple
+                            ? state.staples.filter((i) => i !== item)
+                            : [...state.staples, item],
+                    };
+                }),
         }),
         {
             name: 'asian-meal-planner-storage',

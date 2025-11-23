@@ -4,6 +4,12 @@ export interface Ingredient {
     unit: string;
 }
 
+export interface Nutrition {
+    protein: number;
+    carbs: number;
+    fat: number;
+}
+
 export interface Recipe {
     id: string;
     title: string;
@@ -12,6 +18,7 @@ export interface Recipe {
     servings: number;
     ingredients: Ingredient[];
     tags: string[]; // e.g., "High Iron", "Under 60 mins"
+    nutrition?: Nutrition;
     imageUrl?: string;
 }
 
