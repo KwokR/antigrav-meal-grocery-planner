@@ -43,8 +43,8 @@ export const RecipeList: React.FC = () => {
                         key={f}
                         onClick={() => setFilter(f as any)}
                         className={`px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap transition-colors ${filter === f
-                                ? 'bg-emerald-100 text-emerald-800 border border-emerald-200'
-                                : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'
+                            ? 'bg-emerald-100 text-emerald-800 border border-emerald-200'
+                            : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'
                             }`}
                     >
                         {f === 'all' ? 'All Recipes' : f === 'under60' ? '< 60 Mins' : 'High Iron'}
@@ -83,6 +83,13 @@ export const RecipeList: React.FC = () => {
                                         <Leaf size={12} />
                                         High Iron
                                     </span>
+                                )}
+                                {recipe.nutrition && (
+                                    <div className="flex gap-2 text-slate-400">
+                                        <span>{recipe.nutrition.protein}g P</span>
+                                        <span>{recipe.nutrition.carbs}g C</span>
+                                        <span>{recipe.nutrition.fat}g F</span>
+                                    </div>
                                 )}
                             </div>
 

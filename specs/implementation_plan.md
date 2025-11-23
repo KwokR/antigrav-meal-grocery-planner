@@ -17,6 +17,16 @@ Build a web-based meal planner focused on Asian cuisine (specifically "Made with
 - Initialize React + Vite project.
 - Dependencies: `react`, `react-dom`, `lucide-react` (icons), `clsx`, `tailwind-merge`.
 - Dev Dependencies: `tailwindcss`, `postcss`, `autoprefixer`.
+- **[NEW]** Testing Dependencies: `vitest`, `jsdom`, `@testing-library/react`, `@testing-library/user-event`.
+
+### Testing Strategy (TDD)
+- **Workflow**: For each feature, we will:
+    1.  Write a failing test case (Red).
+    2.  Implement the minimal code to pass the test (Green).
+    3.  Refactor if necessary (Refactor).
+- **Scope**:
+    - **Unit Tests**: `src/store/useStore.test.ts` (Business logic: scaling, staples, plan management).
+    - **Component Tests**: `src/components/__tests__/*.test.tsx` (UI interactions: clicking buttons, form submission).
 
 ### Core Logic & Data Model
 #### [NEW] [src/types.ts](file:///Users/raymondkwok/.gemini/antigravity/scratch/asian_meal_planner/src/types.ts)

@@ -10,6 +10,7 @@ export const AddRecipeForm: React.FC<{ onClose: () => void }> = ({ onClose }) =>
     const [prepTime, setPrepTime] = useState(30);
     const [servings, setServings] = useState(4);
     const [isHighIron, setIsHighIron] = useState(false);
+    const [nutrition, setNutrition] = useState({ protein: 0, carbs: 0, fat: 0 });
     const [ingredientsText, setIngredientsText] = useState('');
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -46,6 +47,7 @@ export const AddRecipeForm: React.FC<{ onClose: () => void }> = ({ onClose }) =>
             servings,
             ingredients,
             tags: isHighIron ? ['High Iron'] : [],
+            nutrition,
         };
 
         addRecipe(newRecipe);
@@ -64,8 +66,9 @@ export const AddRecipeForm: React.FC<{ onClose: () => void }> = ({ onClose }) =>
 
                 <form onSubmit={handleSubmit} className="p-6 space-y-4">
                     <div>
-                        <label className="block text-sm font-medium text-slate-700 mb-1">Recipe Title</label>
+                        <label htmlFor="title" className="block text-sm font-medium text-slate-700 mb-1">Recipe Title</label>
                         <input
+                            id="title"
                             required
                             type="text"
                             className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
@@ -76,8 +79,9 @@ export const AddRecipeForm: React.FC<{ onClose: () => void }> = ({ onClose }) =>
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-slate-700 mb-1">Source URL</label>
+                        <label htmlFor="sourceUrl" className="block text-sm font-medium text-slate-700 mb-1">Source URL</label>
                         <input
+                            id="sourceUrl"
                             type="url"
                             className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
                             value={sourceUrl}
@@ -88,8 +92,9 @@ export const AddRecipeForm: React.FC<{ onClose: () => void }> = ({ onClose }) =>
 
                     <div className="grid grid-cols-2 gap-4">
                         <div>
-                            <label className="block text-sm font-medium text-slate-700 mb-1">Prep Time (mins)</label>
+                            <label htmlFor="prepTime" className="block text-sm font-medium text-slate-700 mb-1">Prep Time (mins)</label>
                             <input
+                                id="prepTime"
                                 type="number"
                                 className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
                                 value={prepTime}
@@ -97,12 +102,46 @@ export const AddRecipeForm: React.FC<{ onClose: () => void }> = ({ onClose }) =>
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-slate-700 mb-1">Servings</label>
+                            <label htmlFor="servings" className="block text-sm font-medium text-slate-700 mb-1">Servings</label>
                             <input
+                                id="servings"
                                 type="number"
                                 className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
                                 value={servings}
                                 onChange={(e) => setServings(parseInt(e.target.value))}
+                            />
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-3 gap-4">
+                        <div>
+                            <label htmlFor="protein" className="block text-sm font-medium text-slate-700 mb-1">Protein (g)</label>
+                            <input
+                                id="protein"
+                                type="number"
+                                className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
+                                value={nutrition.protein}
+                                onChange={(e) => setNutrition({ ...nutrition, protein: parseInt(e.target.value) || 0 })}
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="carbs" className="block text-sm font-medium text-slate-700 mb-1">Carbs (g)</label>
+                            <input
+                                id="carbs"
+                                type="number"
+                                className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
+                                value={nutrition.carbs}
+                                onChange={(e) => setNutrition({ ...nutrition, carbs: parseInt(e.target.value) || 0 })}
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="fat" className="block text-sm font-medium text-slate-700 mb-1">Fat (g)</label>
+                            <input
+                                id="fat"
+                                type="number"
+                                className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
+                                value={nutrition.fat}
+                                onChange={(e) => setNutrition({ ...nutrition, fat: parseInt(e.target.value) || 0 })}
                             />
                         </div>
                     </div>
@@ -121,11 +160,12 @@ export const AddRecipeForm: React.FC<{ onClose: () => void }> = ({ onClose }) =>
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-slate-700 mb-1">
+                        <label htmlFor="ingredients" className="block text-sm font-medium text-slate-700 mb-1">
                             Ingredients (One per line)
                             <span className="block text-xs text-slate-500 font-normal">Format: "2 lbs Beef" or "1 cup Rice"</span>
                         </label>
                         <textarea
+                            id="ingredients"
                             required
                             className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none h-32 font-mono text-sm"
                             value={ingredientsText}
