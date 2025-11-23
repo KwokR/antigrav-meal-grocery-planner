@@ -1,47 +1,82 @@
 import { RecipeList } from './components/RecipeList';
 import { WeeklyPlanner } from './components/WeeklyPlanner';
 import { GroceryList } from './components/GroceryList';
-import { UtensilsCrossed } from 'lucide-react';
+import { UtensilsCrossed, Sparkles } from 'lucide-react';
 
 function App() {
     return (
-        <div className="min-h-screen bg-slate-50 text-slate-900 font-sans">
-            {/* Header */}
-            <header className="bg-white border-b border-slate-200 sticky top-0 z-10">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center gap-3">
-                    <div className="bg-emerald-600 p-2 rounded-lg text-white">
-                        <UtensilsCrossed size={24} />
+        <div className="min-h-screen">
+            {/* Decorative Background Elements */}
+            <div className="fixed inset-0 -z-10 overflow-hidden">
+                <div className="absolute top-0 right-0 w-96 h-96 bg-jade-200/20 rounded-full blur-3xl"></div>
+                <div className="absolute bottom-0 left-0 w-96 h-96 bg-coral-200/20 rounded-full blur-3xl"></div>
+            </div>
+
+            {/* Header with Glassmorphism */}
+            <header className="glass border-b border-warm-200/50 sticky top-0 z-50 animate-slide-up">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+                    <div className="flex items-center gap-4">
+                        <div className="relative">
+                            <div className="absolute inset-0 bg-jade-600 rounded-xl blur-md opacity-50 animate-pulse"></div>
+                            <div className="relative bg-gradient-to-br from-jade-600 to-jade-700 p-3 rounded-xl text-white shadow-lg">
+                                <UtensilsCrossed size={28} strokeWidth={2.5} />
+                            </div>
+                        </div>
+                        <div>
+                            <h1 className="text-2xl font-display font-bold gradient-text flex items-center gap-2">
+                                Asian Meal Planner
+                                <Sparkles size={20} className="text-amber-500" />
+                            </h1>
+                            <p className="text-xs text-warm-600 font-medium">Plan smarter, eat better</p>
+                        </div>
                     </div>
-                    <h1 className="text-xl font-bold bg-gradient-to-r from-emerald-700 to-teal-600 bg-clip-text text-transparent">
-                        Asian Meal Planner
-                    </h1>
+
+                    {/* Quick Stats */}
+                    <div className="hidden md:flex items-center gap-6 text-sm">
+                        <div className="text-center">
+                            <div className="text-2xl font-bold text-jade-600">7</div>
+                            <div className="text-xs text-warm-600">Days</div>
+                        </div>
+                        <div className="w-px h-8 bg-warm-300"></div>
+                        <div className="text-center">
+                            <div className="text-2xl font-bold text-coral-500">4</div>
+                            <div className="text-xs text-warm-600">Portions</div>
+                        </div>
+                    </div>
                 </div>
             </header>
 
             {/* Main Content */}
-            <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fade-in">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
 
-                    {/* Left Column: Recipes & Planner (8 cols) */}
-                    <div className="lg:col-span-8 space-y-8">
-                        <section>
+                    {/* Left Column: Planner & Recipes (8 cols) */}
+                    <div className="lg:col-span-8 space-y-6">
+                        <section className="animate-slide-up" style={{ animationDelay: '100ms' }}>
                             <WeeklyPlanner />
                         </section>
 
-                        <section className="pt-8 border-t border-slate-200">
+                        <section className="animate-slide-up" style={{ animationDelay: '200ms' }}>
                             <RecipeList />
                         </section>
                     </div>
 
                     {/* Right Column: Grocery List (4 cols) */}
                     <div className="lg:col-span-4">
-                        <div className="sticky top-24">
+                        <div className="sticky top-28 animate-slide-up" style={{ animationDelay: '300ms' }}>
                             <GroceryList />
                         </div>
                     </div>
 
                 </div>
             </main>
+
+            {/* Footer */}
+            <footer className="mt-16 py-8 border-t border-warm-200/50 glass">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm text-warm-600">
+                    <p>Made with ❤️ for busy home cooks</p>
+                </div>
+            </footer>
         </div>
     );
 }
