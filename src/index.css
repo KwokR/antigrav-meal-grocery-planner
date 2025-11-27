@@ -116,6 +116,34 @@
         -webkit-text-fill-color: transparent;
         background-clip: text;
     }
+
+    /* Hide scrollbar while maintaining functionality */
+    .scrollbar-hide {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+    .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* Snap scrolling for mobile */
+    .snap-x {
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .snap-start {
+        scroll-snap-align: start;
+    }
+
+    /* Strikethrough animation for checked items */
+    .line-through-animated {
+        position: relative;
+        text-decoration: line-through;
+        text-decoration-color: var(--color-warm-400);
+        text-decoration-thickness: 2px;
+    }
 }
 
 /* Keyframe Animations */
@@ -192,4 +220,17 @@
 
 ::-webkit-scrollbar-thumb:hover {
     background: var(--color-jade-700);
+}
+
+/* Reduced motion support for accessibility */
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
 }

@@ -43,7 +43,7 @@ export const RecipeList: React.FC = () => {
             </div>
 
             {/* Filters */}
-            <div className="flex gap-2 pb-2 overflow-x-auto">
+            <div className="flex gap-2 pb-2 overflow-x-auto scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0">
                 {[
                     { key: 'all', label: 'All Recipes', icon: null },
                     { key: 'under60', label: '< 60 Mins', icon: Clock },
@@ -53,8 +53,8 @@ export const RecipeList: React.FC = () => {
                         key={key}
                         onClick={() => setFilter(key as any)}
                         className={`px-4 py-2 rounded-xl text-sm font-medium whitespace-nowrap transition-all duration-200 flex items-center gap-2 ${filter === key
-                                ? 'bg-gradient-to-r from-jade-600 to-jade-700 text-white shadow-md scale-105'
-                                : 'bg-white text-warm-700 border border-warm-200 hover:border-jade-300 hover:shadow-sm'
+                            ? 'bg-gradient-to-r from-jade-600 to-jade-700 text-white shadow-md scale-105'
+                            : 'bg-white text-warm-700 border border-warm-200 hover:border-jade-300 hover:shadow-sm'
                             }`}
                     >
                         {Icon && <Icon size={14} />}
@@ -125,7 +125,12 @@ export const RecipeList: React.FC = () => {
                                             { label: 'Fat', value: recipe.nutrition.fat, color: 'coral' }
                                         ].map(({ label, value, color }) => (
                                             <div key={label} className="flex-1 text-center">
-                                                <div className={`text-lg font-bold text-${color}-600`}>{value}g</div>
+                                                <div className={`text-lg font-bold ${color === 'jade' ? 'text-jade-600' :
+                                                    color === 'amber' ? 'text-amber-600' :
+                                                        'text-coral-600'
+                                                    }`}>
+                                                    {value}g
+                                                </div>
                                                 <div className="text-xs text-warm-500">{label}</div>
                                             </div>
                                         ))}
