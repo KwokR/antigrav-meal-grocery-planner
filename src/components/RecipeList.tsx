@@ -1,10 +1,40 @@
 import React, { useState } from 'react';
 import { useStore } from '../store/useStore';
-import { Clock, ExternalLink, Trash2, Leaf, Plus, Flame } from 'lucide-react';
+import { Clock, ExternalLink, Leaf, Plus, Users } from 'lucide-react';
 import { AddRecipeForm } from './AddRecipeForm';
 
+// Food emoji helper function
+const getFoodEmoji = (title: string): string => {
+    const lowerTitle = title.toLowerCase();
+
+    // Asian cuisine emojis based on keywords
+    if (lowerTitle.includes('beef') || lowerTitle.includes('steak')) return '🥩';
+    if (lowerTitle.includes('chicken')) return '🍗';
+    if (lowerTitle.includes('pork')) return '🥓';
+    if (lowerTitle.includes('fish') || lowerTitle.includes('salmon')) return '🐟';
+    if (lowerTitle.includes('shrimp') || lowerTitle.includes('prawn')) return '🦐';
+    if (lowerTitle.includes('noodle') || lowerTitle.includes('ramen') || lowerTitle.includes('pasta')) return '🍜';
+    if (lowerTitle.includes('rice') || lowerTitle.includes('fried rice')) return '🍚';
+    if (lowerTitle.includes('dumpling') || lowerTitle.includes('gyoza') || lowerTitle.includes('wonton')) return '🥟';
+    if (lowerTitle.includes('curry')) return '🍛';
+    if (lowerTitle.includes('soup')) return '🍲';
+    if (lowerTitle.includes('vegetable') || lowerTitle.includes('veggie') || lowerTitle.includes('broccoli')) return '🥬';
+    if (lowerTitle.includes('tofu')) return '🧈';
+    if (lowerTitle.includes('egg')) return '🥚';
+    if (lowerTitle.includes('sushi') || lowerTitle.includes('roll')) return '🍣';
+
+    // Default
+    return '🍱';
+};
+
+const getDifficulty = (minutes: number): string => {
+    if (minutes <= 30) return 'Easy';
+    if (minutes <= 60) return 'Medium';
+    return 'Hard';
+};
+
 export const RecipeList: React.FC = () => {
-    const { recipes, deleteRecipe, highIronFocus } = useStore();
+    const { recipes, highIronFocus } = useStore();
     const [isAdding, setIsAdding] = useState(false);
     const [filter, setFilter] = useState<'all' | 'under60' | 'highIron'>('all');
 
@@ -31,11 +61,11 @@ export const RecipeList: React.FC = () => {
             <div className="flex justify-between items-center">
                 <div>
                     <h2 className="text-2xl font-display font-bold text-warm-900">My Recipes</h2>
-                    <p className="text-sm text-warm-600 mt-1">{recipes.length} recipes in your collection</p>
+                    <p className="text-base text-warm-600 mt-1">{recipes.length} recipes in your collection</p>
                 </div>
                 <button
                     onClick={() => setIsAdding(true)}
-                    className="bg-gradient-to-r from-jade-600 to-jade-700 text-white px-5 py-2.5 rounded-xl text-sm font-semibold hover:shadow-lg hover:scale-105 transition-all duration-200 flex items-center gap-2"
+                    className="bg-gradient-to-r from-jade-600 to-jade-700 text-white px-5 py-2.5 rounded-xl text-base font-semibold hover:shadow-lg hover:scale-105 transition-all duration-200 flex items-center gap-2"
                 >
                     <Plus size={18} strokeWidth={2.5} />
                     Add Recipe
@@ -52,7 +82,7 @@ export const RecipeList: React.FC = () => {
                     <button
                         key={key}
                         onClick={() => setFilter(key as any)}
-                        className={`px-4 py-2 rounded-xl text-sm font-medium whitespace-nowrap transition-all duration-200 flex items-center gap-2 ${filter === key
+                        className={`px-4 py-2 rounded-xl text-base font-medium whitespace-nowrap transition-all duration-200 flex items-center gap-2 ${filter === key
                             ? 'bg-gradient-to-r from-jade-600 to-jade-700 text-white shadow-md scale-105'
                             : 'bg-white text-warm-700 border border-warm-200 hover:border-jade-300 hover:shadow-sm'
                             }`}
@@ -64,99 +94,110 @@ export const RecipeList: React.FC = () => {
             </div>
 
             {/* Recipe Grid */}
-            <div className="grid gap-4">
+            <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
                 {sortedRecipes.length === 0 ? (
                     <div className="text-center py-16 bg-white/50 rounded-2xl border-2 border-dashed border-warm-300">
                         <div className="text-4xl mb-3">🍜</div>
                         <p className="text-warm-600 font-medium">No recipes found</p>
-                        <p className="text-sm text-warm-500 mt-1">Add some delicious recipes to get started!</p>
+                        <p className="text-base text-warm-500 mt-1">Add some delicious recipes to get started!</p>
                     </div>
                 ) : (
-                    sortedRecipes.map((recipe, index) => (
-                        <div
-                            key={recipe.id}
-                            className="bg-white p-5 rounded-2xl border border-warm-200 shadow-sm hover-lift group relative overflow-hidden"
-                            style={{ animationDelay: `${index * 50}ms` }}
-                        >
-                            {/* Decorative gradient on hover */}
-                            <div className="absolute inset-0 bg-gradient-to-br from-jade-50/0 to-coral-50/0 group-hover:from-jade-50/50 group-hover:to-coral-50/30 transition-all duration-300 pointer-events-none"></div>
+                    sortedRecipes.map((recipe, idx) => {
+                        const difficulty = getDifficulty(recipe.prepTimeMinutes);
+                        return (
+                            <div
+                                key={recipe.id}
+                                className="group glass-card rounded-2xl overflow-hidden hover-lift flex flex-col h-full"
+                                style={{ animationDelay: `${idx * 50}ms` }}
+                            >
+                                {/* Card Header with Emoji & Gradient */}
+                                <div className={`h-32 relative overflow-hidden ${idx % 3 === 0 ? 'bg-gradient-to-br from-jade-100 via-warm-50 to-coral-50' :
+                                    idx % 3 === 1 ? 'bg-gradient-to-br from-amber-50 via-warm-50 to-jade-50' :
+                                        'bg-gradient-to-br from-coral-50 via-warm-50 to-amber-50'
+                                    }`}>
+                                    <div className="absolute inset-0 flex items-center justify-center text-6xl transform group-hover:scale-110 transition-transform duration-500 ease-out">
+                                        {getFoodEmoji(recipe.title)}
+                                    </div>
 
-                            <div className="relative">
-                                {/* Header */}
-                                <div className="flex justify-between items-start mb-3">
-                                    <h3 className="font-display font-bold text-lg text-warm-900 pr-8 leading-tight">
-                                        {recipe.title}
-                                    </h3>
-                                    <button
-                                        onClick={() => deleteRecipe(recipe.id)}
-                                        className="text-warm-300 hover:text-coral-500 absolute top-0 right-0 opacity-0 group-hover:opacity-100 transition-all duration-200 hover:scale-110"
-                                        aria-label="Delete recipe"
-                                    >
-                                        <Trash2 size={18} />
-                                    </button>
+                                    {/* Quick Add Overlay */}
+                                    <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-end p-3">
+                                        <button
+                                            className="bg-white text-jade-600 p-2 rounded-full shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 hover:bg-jade-50"
+                                            title="Quick Add to Plan"
+                                        >
+                                            <Plus size={20} />
+                                        </button>
+                                    </div>
                                 </div>
 
-                                {/* Tags & Meta */}
-                                <div className="flex items-center gap-2 flex-wrap mb-4">
-                                    <span className="flex items-center gap-1.5 text-xs text-warm-600 bg-warm-100 px-3 py-1.5 rounded-lg font-medium">
-                                        <Clock size={14} />
-                                        {recipe.prepTimeMinutes} min
-                                    </span>
-                                    {recipe.tags.includes('High Iron') && (
-                                        <span className="flex items-center gap-1.5 text-xs text-coral-700 font-semibold bg-gradient-to-r from-coral-100 to-coral-50 px-3 py-1.5 rounded-lg border border-coral-200">
-                                            <Leaf size={14} />
-                                            High Iron
+                                <div className="p-5 flex flex-col flex-grow">
+                                    <div className="flex justify-between items-start mb-3">
+                                        <h3 className="font-display font-bold text-lg text-warm-900 leading-tight group-hover:text-jade-700 transition-colors">
+                                            {recipe.title}
+                                        </h3>
+                                        <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold tracking-wide uppercase shadow-sm ${difficulty === 'Easy' ? 'bg-jade-100 text-jade-700' :
+                                            difficulty === 'Medium' ? 'bg-amber-100 text-amber-700' :
+                                                'bg-coral-100 text-coral-700'
+                                            }`}>
+                                            {difficulty}
                                         </span>
-                                    )}
-                                    {recipe.prepTimeMinutes < 60 && (
-                                        <span className="flex items-center gap-1.5 text-xs text-jade-700 font-medium bg-jade-50 px-3 py-1.5 rounded-lg">
-                                            <Flame size={14} />
-                                            Quick
-                                        </span>
-                                    )}
-                                </div>
+                                    </div>
 
-                                {/* Nutrition */}
-                                {recipe.nutrition && (
-                                    <div className="flex gap-3 mb-4">
+                                    <div className="flex items-center gap-4 text-sm text-warm-500 font-medium mb-5">
+                                        <div className="flex items-center gap-1.5">
+                                            <Clock size={14} className="text-jade-500" />
+                                            <span>{recipe.prepTimeMinutes}m</span>
+                                        </div>
+                                        <div className="flex items-center gap-1.5">
+                                            <Users size={14} className="text-coral-500" />
+                                            <span>{recipe.servings} ppl</span>
+                                        </div>
+                                    </div>
+
+                                    {/* Nutrition Bars */}
+                                    <div className="space-y-2.5 mt-auto">
                                         {[
-                                            { label: 'Protein', value: recipe.nutrition.protein, color: 'jade' },
-                                            { label: 'Carbs', value: recipe.nutrition.carbs, color: 'amber' },
-                                            { label: 'Fat', value: recipe.nutrition.fat, color: 'coral' }
-                                        ].map(({ label, value, color }) => (
-                                            <div key={label} className="flex-1 text-center">
-                                                <div className={`text-lg font-bold ${color === 'jade' ? 'text-jade-600' :
-                                                    color === 'amber' ? 'text-amber-600' :
-                                                        'text-coral-600'
-                                                    }`}>
-                                                    {value}g
+                                            { label: 'Protein', value: recipe.nutrition?.protein || 0, color: 'jade', max: 40 },
+                                            { label: 'Carbs', value: recipe.nutrition?.carbs || 0, color: 'amber', max: 60 },
+                                            { label: 'Fat', value: recipe.nutrition?.fat || 0, color: 'coral', max: 30 }
+                                        ].map((nutrient) => (
+                                            <div key={nutrient.label} className="flex items-center gap-2 text-[10px]">
+                                                <span className="w-10 font-semibold text-warm-600">{nutrient.label}</span>
+                                                <div className="flex-1 h-1.5 bg-warm-100 rounded-full overflow-hidden">
+                                                    <div
+                                                        className={`h-full rounded-full transition-all duration-1000 ease-out ${nutrient.color === 'jade' ? 'bg-jade-400' :
+                                                            nutrient.color === 'amber' ? 'bg-amber-400' :
+                                                                'bg-coral-400'
+                                                            }`}
+                                                        style={{ width: `${Math.min((nutrient.value / nutrient.max) * 100, 100)}%` }}
+                                                    />
                                                 </div>
-                                                <div className="text-xs text-warm-500">{label}</div>
+                                                <span className="w-6 text-right text-warm-400 font-medium">{nutrient.value}g</span>
                                             </div>
                                         ))}
                                     </div>
-                                )}
 
-                                {/* Footer */}
-                                <div className="flex justify-between items-center pt-3 border-t border-warm-100">
-                                    <div className="text-xs text-warm-500">
-                                        {recipe.ingredients.length} ingredients
+                                    {/* Footer */}
+                                    <div className="flex justify-between items-center pt-3 mt-4 border-t border-warm-100">
+                                        <div className="text-sm text-warm-500">
+                                            {recipe.ingredients.length} ingredients
+                                        </div>
+                                        {recipe.sourceUrl && (
+                                            <a
+                                                href={recipe.sourceUrl}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="text-jade-600 hover:text-jade-700 text-sm font-semibold flex items-center gap-1.5 hover:gap-2 transition-all"
+                                            >
+                                                View Recipe
+                                                <ExternalLink size={14} />
+                                            </a>
+                                        )}
                                     </div>
-                                    {recipe.sourceUrl && (
-                                        <a
-                                            href={recipe.sourceUrl}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="text-jade-600 hover:text-jade-700 text-xs font-semibold flex items-center gap-1.5 hover:gap-2 transition-all"
-                                        >
-                                            View Recipe
-                                            <ExternalLink size={14} />
-                                        </a>
-                                    )}
                                 </div>
                             </div>
-                        </div>
-                    ))
+                        );
+                    })
                 )}
             </div>
 

@@ -31,7 +31,7 @@ export const GroceryList: React.FC = () => {
     const groceryList = useMemo(() => {
         const list: Record<string, GroceryItem> = {};
 
-        Object.entries(mealPlan).forEach(([date, recipeIds]) => {
+        Object.entries(mealPlan).forEach(([_, recipeIds]) => {
             recipeIds.forEach((recipeId) => {
                 const recipe = recipes.find((r) => r.id === recipeId);
                 if (recipe) {
@@ -84,16 +84,17 @@ export const GroceryList: React.FC = () => {
     };
 
     return (
-        <div className="bg-white rounded-2xl border-2 border-warm-200 shadow-lg h-full flex flex-col overflow-hidden">
+
+        <div className="glass rounded-2xl shadow-xl h-full flex flex-col overflow-hidden border-0">
             {/* Header */}
-            <div className="bg-gradient-to-r from-jade-50 to-jade-100/50 px-6 py-5 border-b-2 border-warm-200">
+            <div className="bg-gradient-to-r from-jade-50/80 to-jade-100/30 px-6 py-5 border-b border-white/50 backdrop-blur-sm">
                 <div className="flex items-center gap-3 mb-3">
-                    <div className="bg-gradient-to-br from-jade-600 to-jade-700 p-2 rounded-xl text-white shadow-md">
+                    <div className="bg-gradient-to-br from-jade-600 to-jade-700 p-2.5 rounded-xl text-white shadow-lg shadow-jade-200">
                         <ShoppingCart size={20} />
                     </div>
                     <div className="flex-1">
                         <h2 className="text-xl font-display font-bold text-warm-900">Grocery List</h2>
-                        <p className="text-xs text-warm-600">{groceryList.length} items for this week</p>
+                        <p className="text-sm text-warm-500 font-medium">{groceryList.length} items for this week</p>
                     </div>
                 </div>
 
@@ -101,7 +102,7 @@ export const GroceryList: React.FC = () => {
                 <div className="flex flex-col sm:flex-row gap-2">
                     <button
                         onClick={() => setShowStaples(!showStaples)}
-                        className="flex-1 flex items-center justify-center gap-2 px-3 py-2.5 sm:py-2 rounded-lg text-xs font-semibold bg-white border border-warm-300 text-warm-700 hover:border-jade-400 hover:bg-jade-50 transition-all"
+                        className="flex-1 flex items-center justify-center gap-2 px-3 py-2.5 sm:py-2 rounded-xl text-sm font-semibold bg-white/60 border border-white/60 text-warm-600 hover:bg-white hover:text-jade-700 hover:shadow-sm transition-all"
                     >
                         {showStaples ? <EyeOff size={14} /> : <Eye size={14} />}
                         <span className="hidden sm:inline">{showStaples ? 'Hide' : 'Show'} Staples</span>
@@ -109,9 +110,9 @@ export const GroceryList: React.FC = () => {
                     </button>
                     <button
                         onClick={handleCopyToClipboard}
-                        className={`flex-1 flex items-center justify-center gap-2 px-3 py-2.5 sm:py-2 rounded-lg text-xs font-semibold transition-all ${copied
+                        className={`flex-1 flex items-center justify-center gap-2 px-3 py-2.5 sm:py-2 rounded-xl text-sm font-semibold transition-all shadow-sm ${copied
                             ? 'bg-jade-600 text-white'
-                            : 'bg-gradient-to-r from-jade-600 to-jade-700 text-white hover:shadow-md hover:scale-105'
+                            : 'bg-gradient-to-r from-jade-600 to-jade-700 text-white hover:shadow-lg hover:scale-105'
                             }`}
                     >
                         {copied ? (
@@ -130,12 +131,12 @@ export const GroceryList: React.FC = () => {
             </div>
 
             {/* List */}
-            <div className="flex-1 overflow-y-auto p-4">
+            <div className="flex-1 overflow-y-auto p-4 custom-scrollbar">
                 {groceryList.length === 0 ? (
                     <div className="text-center py-12">
-                        <div className="text-5xl mb-3 opacity-20">🛒</div>
+                        <div className="text-5xl mb-4 opacity-20 grayscale">🛒</div>
                         <p className="text-warm-600 font-medium">No items needed</p>
-                        <p className="text-sm text-warm-500 mt-1">Plan some meals to generate a list!</p>
+                        <p className="text-base text-warm-400 mt-1">Plan some meals to generate a list!</p>
                     </div>
                 ) : (
                     <ul className="space-y-2">
@@ -145,11 +146,11 @@ export const GroceryList: React.FC = () => {
                             return (
                                 <li
                                     key={item.name}
-                                    className={`group relative p-3 rounded-xl border-2 transition-all duration-200 hover:shadow-md ${isStaple
-                                        ? 'bg-amber-50/50 border-amber-200'
+                                    className={`group relative p-3 rounded-xl transition-all duration-200 ${isStaple
+                                        ? 'bg-amber-50/40 border border-amber-100/50'
                                         : item.checked
-                                            ? 'bg-warm-100/50 border-warm-300'
-                                            : 'bg-warm-50 border-warm-200 hover:border-jade-300'
+                                            ? 'bg-warm-50/30 border border-transparent'
+                                            : 'bg-white/60 border border-white/60 hover:bg-white hover:shadow-md hover:-translate-y-0.5'
                                         }`}
                                     style={{ animationDelay: `${index * 20}ms` }}
                                 >
@@ -157,7 +158,7 @@ export const GroceryList: React.FC = () => {
                                         {/* Checkbox */}
                                         <button
                                             onClick={() => toggleChecked(item.name)}
-                                            className="mt-0.5 text-jade-600 hover:text-jade-700 transition-colors cursor-pointer min-w-[20px] min-h-[20px] flex items-center justify-center"
+                                            className={`mt-0.5 transition-all cursor-pointer min-w-[20px] min-h-[20px] flex items-center justify-center rounded-md ${item.checked ? 'text-jade-400' : 'text-jade-600 hover:scale-110'}`}
                                             aria-label={item.checked ? 'Uncheck item' : 'Check item'}
                                         >
                                             {item.checked ? <CheckSquare size={20} strokeWidth={2.5} /> : <Square size={20} strokeWidth={2} />}
@@ -165,14 +166,14 @@ export const GroceryList: React.FC = () => {
 
                                         {/* Item Info */}
                                         <div className="flex-1 min-w-0">
-                                            <div className={`font-semibold text-warm-900 text-sm leading-tight transition-all ${item.checked ? 'line-through-animated opacity-60' : ''}`}>
+                                            <div className={`font-semibold text-warm-900 text-base leading-tight transition-all ${item.checked ? 'line-through-animated opacity-40' : ''}`}>
                                                 {Math.round(item.quantity * 100) / 100} {item.unit}
                                             </div>
-                                            <div className={`text-warm-700 text-sm transition-all ${item.checked ? 'line-through-animated opacity-60' : ''}`}>{item.name}</div>
+                                            <div className={`text-warm-600 text-base transition-all ${item.checked ? 'line-through-animated opacity-40' : ''}`}>{item.name}</div>
                                             {isStaple && (
                                                 <div className="flex items-center gap-1 mt-1">
-                                                    <Archive size={10} className="text-amber-600" />
-                                                    <span className="text-[10px] text-amber-600 font-semibold uppercase tracking-wide">Staple</span>
+                                                    <Archive size={10} className="text-amber-500" />
+                                                    <span className="text-[10px] text-amber-600 font-bold uppercase tracking-wide opacity-70">Staple</span>
                                                 </div>
                                             )}
                                         </div>
@@ -181,8 +182,8 @@ export const GroceryList: React.FC = () => {
                                         <button
                                             onClick={() => toggleStaple(item.name)}
                                             className={`opacity-0 group-hover:opacity-100 transition-all duration-200 p-1.5 rounded-lg hover:scale-110 ${isStaple
-                                                ? 'text-amber-600 hover:bg-amber-100'
-                                                : 'text-warm-400 hover:bg-warm-100 hover:text-jade-600'
+                                                ? 'text-amber-500 hover:bg-amber-50'
+                                                : 'text-warm-300 hover:bg-warm-50 hover:text-jade-600'
                                                 }`}
                                             aria-label={`Mark ${item.name} as staple`}
                                             title={isStaple ? "Remove from staples" : "Mark as staple"}
@@ -199,9 +200,9 @@ export const GroceryList: React.FC = () => {
 
             {/* Footer Tip */}
             {groceryList.length > 0 && (
-                <div className="px-4 py-3 border-t border-warm-200 bg-warm-50/50">
-                    <p className="text-xs text-warm-600 text-center">
-                        💡 Tip: Mark pantry staples to hide them from your list
+                <div className="px-4 py-3 border-t border-white/50 bg-white/30 backdrop-blur-sm">
+                    <p className="text-[10px] text-warm-500 text-center font-medium">
+                        💡 Tip: Mark pantry staples to hide them
                     </p>
                 </div>
             )}

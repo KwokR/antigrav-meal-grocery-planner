@@ -70,7 +70,7 @@ export const AddRecipeForm: React.FC<{ onClose: () => void }> = ({ onClose }) =>
 
                 <form onSubmit={handleSubmit} className="p-5 sm:p-6 space-y-4">
                     <div>
-                        <label htmlFor="title" className="block text-sm font-semibold text-warm-900 mb-1.5">Recipe Title</label>
+                        <label htmlFor="title" className="block text-base font-semibold text-warm-900 mb-1.5">Recipe Title</label>
                         <input
                             id="title"
                             required
@@ -83,7 +83,7 @@ export const AddRecipeForm: React.FC<{ onClose: () => void }> = ({ onClose }) =>
                     </div>
 
                     <div>
-                        <label htmlFor="sourceUrl" className="block text-sm font-semibold text-warm-900 mb-1.5">Source URL</label>
+                        <label htmlFor="sourceUrl" className="block text-base font-semibold text-warm-900 mb-1.5">Source URL</label>
                         <input
                             id="sourceUrl"
                             type="url"
@@ -96,7 +96,7 @@ export const AddRecipeForm: React.FC<{ onClose: () => void }> = ({ onClose }) =>
 
                     <div className="grid grid-cols-2 gap-3 sm:gap-4">
                         <div>
-                            <label htmlFor="prepTime" className="block text-sm font-semibold text-warm-900 mb-1.5">Prep Time (mins)</label>
+                            <label htmlFor="prepTime" className="block text-base font-semibold text-warm-900 mb-1.5">Prep Time (mins)</label>
                             <input
                                 id="prepTime"
                                 type="number"
@@ -106,7 +106,7 @@ export const AddRecipeForm: React.FC<{ onClose: () => void }> = ({ onClose }) =>
                             />
                         </div>
                         <div>
-                            <label htmlFor="servings" className="block text-sm font-semibold text-warm-900 mb-1.5">Servings</label>
+                            <label htmlFor="servings" className="block text-base font-semibold text-warm-900 mb-1.5">Servings</label>
                             <input
                                 id="servings"
                                 type="number"
@@ -114,12 +114,12 @@ export const AddRecipeForm: React.FC<{ onClose: () => void }> = ({ onClose }) =>
                                 value={servings}
                                 onChange={(e) => setServings(parseInt(e.target.value))}
                             />
-                        </div>
-                    </div>
+                        </div >
+                    </div >
 
                     <div className="grid grid-cols-3 gap-2 sm:gap-3">
                         <div>
-                            <label htmlFor="protein" className="block text-xs sm:text-sm font-semibold text-warm-900 mb-1.5">Protein (g)</label>
+                            <label htmlFor="protein" className="block text-sm font-semibold text-warm-900 mb-1.5">Protein (g)</label>
                             <input
                                 id="protein"
                                 type="number"
@@ -129,7 +129,7 @@ export const AddRecipeForm: React.FC<{ onClose: () => void }> = ({ onClose }) =>
                             />
                         </div>
                         <div>
-                            <label htmlFor="carbs" className="block text-xs sm:text-sm font-semibold text-warm-900 mb-1.5">Carbs (g)</label>
+                            <label htmlFor="carbs" className="block text-sm font-semibold text-warm-900 mb-1.5">Carbs (g)</label>
                             <input
                                 id="carbs"
                                 type="number"
@@ -139,7 +139,7 @@ export const AddRecipeForm: React.FC<{ onClose: () => void }> = ({ onClose }) =>
                             />
                         </div>
                         <div>
-                            <label htmlFor="fat" className="block text-xs sm:text-sm font-semibold text-warm-900 mb-1.5">Fat (g)</label>
+                            <label htmlFor="fat" className="block text-sm font-semibold text-warm-900 mb-1.5">Fat (g)</label>
                             <input
                                 id="fat"
                                 type="number"
@@ -164,19 +164,19 @@ export const AddRecipeForm: React.FC<{ onClose: () => void }> = ({ onClose }) =>
                     </div>
 
                     <div>
-                        <label htmlFor="ingredients" className="block text-sm font-semibold text-warm-900 mb-1.5">
+                        <label htmlFor="ingredients" className="block text-base font-semibold text-warm-900 mb-1.5">
                             Ingredients (One per line)
-                            <span className="block text-xs text-warm-600 font-normal mt-0.5">Format: "2 lbs Beef" or "1 cup Rice"</span>
+                            <span className="block text-sm text-warm-600 font-normal mt-0.5">Format: "2 lbs Beef" or "1 cup Rice"</span>
                         </label>
                         <textarea
                             id="ingredients"
                             required
-                            className="w-full px-4 py-3 border-2 border-warm-200 rounded-xl focus:ring-2 focus:ring-jade-500 focus:border-jade-500 outline-none h-32 font-mono text-sm bg-white text-warm-900 placeholder-warm-400 transition-all resize-none"
+                            className="w-full px-4 py-3 border-2 border-warm-200 rounded-xl focus:ring-2 focus:ring-jade-500 focus:border-jade-500 outline-none h-32 font-mono text-base bg-white text-warm-900 placeholder-warm-400 transition-all resize-none"
                             value={ingredientsText}
                             onChange={(e) => setIngredientsText(e.target.value)}
                             placeholder="1 lb Flank Steak&#10;2 cups Broccoli&#10;1 tbsp Soy Sauce"
                         />
-                    </div>
+                    </div >
 
                     <button
                         type="submit"
@@ -185,8 +185,8 @@ export const AddRecipeForm: React.FC<{ onClose: () => void }> = ({ onClose }) =>
                         <Plus size={20} />
                         Add Recipe
                     </button>
-                </form>
-            </div>
-        </div>
+                </form >
+            </div >
+        </div >
     );
 };
