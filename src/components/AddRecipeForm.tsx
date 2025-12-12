@@ -26,8 +26,18 @@ export const AddRecipeForm: React.FC<{ onClose: () => void }> = ({ onClose }) =>
             // e.g. "2 lbs Beef" -> 2, "lbs", "Beef"
             const match = trimmed.match(/^([\d./]+)\s*([a-zA-Z]+)?\s+(.*)$/);
             if (match) {
+                // Safe parsing of "1/2", "1.5", "3", etc.
+                const qtyStr = match[1];
+                let quantity = 0;
+                if (qtyStr.includes('/')) {
+                    const [num, den] = qtyStr.split('/').map(Number);
+                    if (den !== 0) quantity = num / den;
+                } else {
+                    quantity = parseFloat(qtyStr);
+                }
+
                 return {
-                    quantity: parseFloat(eval(match[1])), // eval to handle fractions like 1/2
+                    quantity,
                     unit: match[2] || '',
                     name: match[3]
                 };
