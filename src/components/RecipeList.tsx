@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { useStore } from '../store/useStore';
-import { Clock, ExternalLink, Leaf, Plus, Users } from 'lucide-react';
+import { Clock, ExternalLink, Leaf, Plus, Users, Check, Trash2 } from 'lucide-react';
 import { AddRecipeForm } from './AddRecipeForm';
+
+const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
 // Food emoji helper function
 const getFoodEmoji = (title: string): string => {
@@ -34,9 +36,43 @@ const getDifficulty = (minutes: number): string => {
 };
 
 export const RecipeList: React.FC = () => {
-    const { recipes, highIronFocus } = useStore();
+    const { recipes, highIronFocus, mealPlan, updateMealPlan, deleteRecipe } = useStore();
     const [isAdding, setIsAdding] = useState(false);
     const [filter, setFilter] = useState<'all' | 'under60' | 'highIron'>('all');
+    const [quickAddedRecipe, setQuickAddedRecipe] = useState<string | null>(null);
+    const [deletingRecipe, setDeletingRecipe] = useState<string | null>(null);
+
+    // Find first day with no meals planned
+    const getFirstEmptyDay = (): string | null => {
+        for (const day of DAYS) {
+            if (!mealPlan[day] || mealPlan[day].length === 0) {
+                return day;
+            }
+        }
+        return null;
+    };
+
+    const handleQuickAdd = (recipeId: string) => {
+        const emptyDay = getFirstEmptyDay();
+        if (emptyDay) {
+            updateMealPlan(emptyDay, recipeId);
+            setQuickAddedRecipe(recipeId);
+            setTimeout(() => setQuickAddedRecipe(null), 1500);
+        }
+    };
+
+    const handleDelete = (recipeId: string) => {
+        if (deletingRecipe === recipeId) {
+            // Second click - confirm deletion
+            deleteRecipe(recipeId);
+            setDeletingRecipe(null);
+        } else {
+            // First click - show confirmation
+            setDeletingRecipe(recipeId);
+            // Auto-reset after 3 seconds if not confirmed
+            setTimeout(() => setDeletingRecipe(null), 3000);
+        }
+    };
 
     const filteredRecipes = recipes.filter(r => {
         if (filter === 'under60') return r.prepTimeMinutes < 60;
@@ -119,13 +155,30 @@ export const RecipeList: React.FC = () => {
                                         {getFoodEmoji(recipe.title)}
                                     </div>
 
-                                    {/* Quick Add Overlay */}
-                                    <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-end p-3">
+                                    {/* Quick Add & Delete Overlay */}
+                                    <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-between p-3">
+                                        {/* Delete Button */}
                                         <button
-                                            className="bg-white text-jade-600 p-2 rounded-full shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 hover:bg-jade-50"
-                                            title="Quick Add to Plan"
+                                            onClick={() => handleDelete(recipe.id)}
+                                            className={`p-2 rounded-full shadow-lg transform -translate-x-4 group-hover:translate-x-0 transition-all duration-300 ${deletingRecipe === recipe.id
+                                                ? 'bg-coral-600 text-white scale-110'
+                                                : 'bg-white text-coral-500 hover:bg-coral-50 hover:scale-110'
+                                                }`}
+                                            title={deletingRecipe === recipe.id ? 'Click again to confirm delete' : 'Delete recipe'}
                                         >
-                                            <Plus size={20} />
+                                            <Trash2 size={18} />
+                                        </button>
+                                        {/* Quick Add Button */}
+                                        <button
+                                            onClick={() => handleQuickAdd(recipe.id)}
+                                            disabled={!getFirstEmptyDay()}
+                                            className={`p-2 rounded-full shadow-lg transform translate-x-4 group-hover:translate-x-0 transition-all duration-300 ${quickAddedRecipe === recipe.id
+                                                ? 'bg-jade-600 text-white scale-110'
+                                                : 'bg-white text-jade-600 hover:bg-jade-50 hover:scale-110'
+                                                } ${!getFirstEmptyDay() ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                            title={getFirstEmptyDay() ? `Quick Add to ${getFirstEmptyDay()}` : 'All days have meals'}
+                                        >
+                                            {quickAddedRecipe === recipe.id ? <Check size={20} /> : <Plus size={20} />}
                                         </button>
                                     </div>
                                 </div>
@@ -135,7 +188,7 @@ export const RecipeList: React.FC = () => {
                                         <h3 className="font-display font-bold text-lg text-warm-900 leading-tight group-hover:text-jade-700 transition-colors">
                                             {recipe.title}
                                         </h3>
-                                        <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold tracking-wide uppercase shadow-sm ${difficulty === 'Easy' ? 'bg-jade-100 text-jade-700' :
+                                        <span className={`px-2.5 py-1 rounded-full text-xs font-bold tracking-wide uppercase shadow-sm ${difficulty === 'Easy' ? 'bg-jade-100 text-jade-700' :
                                             difficulty === 'Medium' ? 'bg-amber-100 text-amber-700' :
                                                 'bg-coral-100 text-coral-700'
                                             }`}>
@@ -157,11 +210,11 @@ export const RecipeList: React.FC = () => {
                                     {/* Nutrition Bars */}
                                     <div className="space-y-2.5 mt-auto">
                                         {[
-                                            { label: 'Protein', value: recipe.nutrition?.protein || 0, color: 'jade', max: 40 },
+                                            { label: 'Pro', value: recipe.nutrition?.protein || 0, color: 'jade', max: 40 },
                                             { label: 'Carbs', value: recipe.nutrition?.carbs || 0, color: 'amber', max: 60 },
                                             { label: 'Fat', value: recipe.nutrition?.fat || 0, color: 'coral', max: 30 }
                                         ].map((nutrient) => (
-                                            <div key={nutrient.label} className="flex items-center gap-2 text-[10px]">
+                                            <div key={nutrient.label} className="flex items-center gap-2 text-xs">
                                                 <span className="w-10 font-semibold text-warm-600">{nutrient.label}</span>
                                                 <div className="flex-1 h-1.5 bg-warm-100 rounded-full overflow-hidden">
                                                     <div

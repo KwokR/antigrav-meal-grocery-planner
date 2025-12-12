@@ -33,7 +33,9 @@ describe('GroceryList', () => {
         // If recipe is 2 servings, we need 2x.
 
         render(<GroceryList />);
-        expect(screen.getByText(/1 lb Beef/i)).toBeDefined();
+        // Display format: quantity+unit on one line, name on another
+        expect(screen.getByText(/1 lb/i)).toBeDefined();
+        expect(screen.getByText(/Beef/i)).toBeDefined();
     });
 
     it('should allow marking items as staples', () => {

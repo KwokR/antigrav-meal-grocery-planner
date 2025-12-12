@@ -173,7 +173,7 @@ export const GroceryList: React.FC = () => {
                                             {isStaple && (
                                                 <div className="flex items-center gap-1 mt-1">
                                                     <Archive size={10} className="text-amber-500" />
-                                                    <span className="text-[10px] text-amber-600 font-bold uppercase tracking-wide opacity-70">Staple</span>
+                                                    <span className="text-xs text-amber-600 font-bold uppercase tracking-wide opacity-70">Staple</span>
                                                 </div>
                                             )}
                                         </div>
@@ -201,7 +201,7 @@ export const GroceryList: React.FC = () => {
             {/* Footer Tip */}
             {groceryList.length > 0 && (
                 <div className="px-4 py-3 border-t border-white/50 bg-white/30 backdrop-blur-sm">
-                    <p className="text-[10px] text-warm-500 text-center font-medium">
+                    <p className="text-xs text-warm-500 text-center font-medium">
                         💡 Tip: Mark pantry staples to hide them
                     </p>
                 </div>

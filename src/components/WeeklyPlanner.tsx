@@ -83,8 +83,9 @@ export const WeeklyPlanner: React.FC = () => {
                                 <div className="p-3 lg:p-2.5 space-y-2 lg:space-y-2 min-h-[120px] lg:min-h-[110px]">
                                     {dayMeals.length === 0 ? (
                                         <div className="text-center py-6 lg:py-5">
-                                            <div className="text-3xl lg:text-2xl mb-2 lg:mb-1 opacity-20 grayscale">🍽️</div>
-                                            <p className="text-sm text-warm-400 font-medium">No meals planned</p>
+                                            <div className="text-3xl lg:text-2xl mb-2 lg:mb-1 opacity-30">🍽️</div>
+                                            <p className="text-sm text-warm-500 font-medium">Drop a recipe here</p>
+                                            <p className="text-xs text-warm-400 mt-1">or use "+ Add Meal"</p>
                                         </div>
                                     ) : (
                                         dayMeals.map((recipeId, idx) => {
@@ -115,7 +116,7 @@ export const WeeklyPlanner: React.FC = () => {
                                                     {isHighIron && (
                                                         <div className="flex items-center gap-1 mt-1.5">
                                                             <Leaf size={10} className="text-coral-500 lg:w-2.5 lg:h-2.5" />
-                                                            <span className="text-[10px] lg:text-[9px] text-coral-600 font-bold tracking-wide uppercase">High Iron</span>
+                                                            <span className="text-xs lg:text-[10px] text-coral-600 font-bold tracking-wide uppercase">High Iron</span>
                                                         </div>
                                                     )}
                                                 </div>

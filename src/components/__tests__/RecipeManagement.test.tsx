@@ -31,7 +31,7 @@ describe('RecipeManagement', () => {
         });
     });
 
-    it('should display nutrition badges', () => {
+    it('should display nutrition bars with values', () => {
         useStore.setState({
             recipes: [{
                 id: '1',
@@ -47,8 +47,12 @@ describe('RecipeManagement', () => {
 
         render(<RecipeList />);
 
-        expect(screen.getByText('30g P')).toBeDefined();
-        expect(screen.getByText('40g C')).toBeDefined();
-        expect(screen.getByText('10g F')).toBeDefined();
+        // Nutrition bars show label and value separately
+        expect(screen.getByText('Pro')).toBeDefined();
+        expect(screen.getByText('Carbs')).toBeDefined();
+        expect(screen.getByText('Fat')).toBeDefined();
+        expect(screen.getByText('30g')).toBeDefined();
+        expect(screen.getByText('40g')).toBeDefined();
+        expect(screen.getByText('10g')).toBeDefined();
     });
 });
